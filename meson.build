@@ -12,6 +12,7 @@ rc = meson.get_compiler('rust')
 rust_args = [
   '--cfg', 'feature="default"',
   '--cfg', 'feature="derive"',
+  '--cfg', 'feature="parsing"',
   '--cfg', 'feature="printing"',
   '--cfg', 'feature="clone-impls"',
   '--cfg', 'feature="proc-macro"',
@@ -36,9 +37,13 @@ pm2 = subproject('proc-macro2').get_variable('lib')
 
 
 lib = static_library(
-  'sync',
+  'syn',
   'src/lib.rs',
   rust_args : rust_args,
   link_with : [u_ind, quote, pm2],
   rust_crate_type : 'rlib'
+)
+
+dep_syn = declare_dependency(
+  link_with : [lib, u_ind, quote, pm2],
 )
